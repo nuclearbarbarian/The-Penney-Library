@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Penney Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-rule heavy"></div>
+    <div class="header-content">
+      <h1 class="site-title">The Penney Library</h1>
+      <span class="site-subtitle">A Personal Reading Record</span>
+    </div>
+    <div class="header-rule heavy"></div>
+  </header>
+
+  <nav class="site-nav">
+    <button class="nav-btn active" data-view="library">Library</button>
+    <button class="nav-btn" data-view="trends">Trends</button>
+    <button class="nav-btn" data-view="reflections">Reflections</button>
+  </nav>
+
+  <!-- LIBRARY VIEW -->
+  <main id="view-library" class="view active">
+    <div class="library-controls">
+      <div class="filter-group">
+        <label for="filter-year">Year</label>
+        <select id="filter-year">
+          <option value="all">All Years</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-genre">Genre</label>
+        <select id="filter-genre">
+          <option value="all">All Genres</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="sort-by">Sort</label>
+        <select id="sort-by">
+          <option value="date-desc">Date (Newest)</option>
+          <option value="date-asc">Date (Oldest)</option>
+          <option value="title">Title</option>
+          <option value="author">Author</option>
+        </select>
+      </div>
+      <div class="library-count">
+        <span id="book-count">0</span> books
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="library-table">
+        <thead>
+          <tr>
+            <th class="col-title">Title</th>
+            <th class="col-author">Author</th>
+            <th class="col-genre">Genre</th>
+            <th class="col-year">Year Read</th>
+            <th class="col-date">Date Finished</th>
+          </tr>
+        </thead>
+        <tbody id="library-body">
+        </tbody>
+      </table>
+      <p id="empty-state" class="empty-state">
+        No books yet. Add reading data via Claude Code.
+      </p>
+    </div>
+  </main>
+
+  <!-- TRENDS VIEW -->
+  <main id="view-trends" class="view">
+    <p class="empty-state">Trends will appear once reading data is loaded.</p>
+  </main>
+
+  <!-- REFLECTIONS VIEW -->
+  <main id="view-reflections" class="view">
+    <div id="reflections-list"></div>
+    <p id="reflections-empty" class="empty-state">
+      No reflections yet. Run <code>/reflect [year]</code> in Claude Code to begin.
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="header-rule light"></div>
+    <div class="footer-content">
+      <span class="footer-left">The Penney Library</span>
+      <span class="footer-right" id="last-updated"></span>
+    </div>
+    <div class="header-rule light"></div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
