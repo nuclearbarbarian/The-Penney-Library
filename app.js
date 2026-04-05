@@ -69,6 +69,7 @@
   function init() {
     populateFilters();
     renderLibrary();
+    renderTrends();
     renderReflections();
     updateFooter();
   }
@@ -270,6 +271,250 @@
 
       reflectionsList.appendChild(card);
     });
+  }
+
+  // --- Trends Rendering ---
+  var CHART_COLORS = ['#2B4B6F', '#5C5C5C', '#8A8A8A', '#B8B8B8', '#8B2B2B',
+    '#3D5C3D', '#C4A035', '#2D2D2D', '#9C9788', '#DCDCDC', '#6B4B3D', '#4B6B5C'];
+
+  function renderTrends() {
+    var trendsEmpty = document.getElementById('trends-empty');
+    var trendsContent = document.getElementById('trends-content');
+
+    if (books.length === 0) {
+      trendsEmpty.style.display = 'block';
+      trendsContent.style.display = 'none';
+      return;
+    }
+
+    trendsEmpty.style.display = 'none';
+    trendsContent.style.display = 'block';
+
+    renderBooksPerYear();
+    renderGenreByYear();
+    renderGenreDistribution();
+  }
+
+  function getYears() {
+    var yearSet = {};
+    books.forEach(function (b) { if (b.year_read) yearSet[b.year_read] = true; });
+    return Object.keys(yearSet).map(Number).sort();
+  }
+
+  function getGenreCounts() {
+    var counts = {};
+    books.forEach(function (b) {
+      var g = b.genre || 'Unknown';
+      counts[g] = (counts[g] || 0) + 1;
+    });
+    return counts;
+  }
+
+  // --- Chart 1: Books Per Year (vertical bar) ---
+  function renderBooksPerYear() {
+    var container = document.getElementById('chart-books-per-year');
+    var years = getYears();
+    if (years.length === 0) return;
+
+    var counts = {};
+    books.forEach(function (b) {
+      var y = b.year_read;
+      counts[y] = (counts[y] || 0) + 1;
+    });
+
+    var maxCount = 0;
+    years.forEach(function (y) { if (counts[y] > maxCount) maxCount = counts[y]; });
+
+    var svgW = 700;
+    var svgH = 300;
+    var padL = 50;
+    var padR = 20;
+    var padT = 20;
+    var padB = 40;
+    var chartW = svgW - padL - padR;
+    var chartH = svgH - padT - padB;
+
+    var barW = Math.min(40, (chartW / years.length) * 0.6);
+    var gap = (chartW - barW * years.length) / (years.length + 1);
+
+    // Y-axis: round max up to a nice number
+    var yMax = Math.ceil(maxCount / 5) * 5;
+    if (yMax < 5) yMax = 5;
+    var yTicks = 5;
+    var yStep = yMax / yTicks;
+
+    var svg = '<svg width="100%" viewBox="0 0 ' + svgW + ' ' + svgH + '" xmlns="http://www.w3.org/2000/svg" style="font-family: \'Source Serif 4\', Georgia, serif;">';
+
+    // Grid lines and Y labels
+    for (var i = 0; i <= yTicks; i++) {
+      var yVal = yStep * i;
+      var yPos = padT + chartH - (yVal / yMax) * chartH;
+      svg += '<line x1="' + padL + '" y1="' + yPos + '" x2="' + (svgW - padR) + '" y2="' + yPos + '" stroke="#DCDCDC" stroke-width="0.5"/>';
+      svg += '<text x="' + (padL - 8) + '" y="' + (yPos + 4) + '" text-anchor="end" font-size="9" font-family="\'IBM Plex Mono\', monospace" fill="#5C5C5C">' + yVal + '</text>';
+    }
+
+    // Axis lines
+    svg += '<line x1="' + padL + '" y1="' + padT + '" x2="' + padL + '" y2="' + (padT + chartH) + '" stroke="#1A1A1A" stroke-width="0.5"/>';
+    svg += '<line x1="' + padL + '" y1="' + (padT + chartH) + '" x2="' + (svgW - padR) + '" y2="' + (padT + chartH) + '" stroke="#1A1A1A" stroke-width="0.5"/>';
+
+    // Bars
+    years.forEach(function (year, idx) {
+      var count = counts[year] || 0;
+      var barH = (count / yMax) * chartH;
+      var x = padL + gap + idx * (barW + gap);
+      var y = padT + chartH - barH;
+
+      svg += '<rect x="' + x + '" y="' + y + '" width="' + barW + '" height="' + barH + '" fill="#2B4B6F" stroke="#1A1A1A" stroke-width="0.5"/>';
+
+      // Value label on top
+      svg += '<text x="' + (x + barW / 2) + '" y="' + (y - 6) + '" text-anchor="middle" font-size="10" font-family="\'IBM Plex Mono\', monospace" fill="#1A1A1A">' + count + '</text>';
+
+      // Year label
+      svg += '<text x="' + (x + barW / 2) + '" y="' + (padT + chartH + 20) + '" text-anchor="middle" font-size="10" font-family="\'IBM Plex Mono\', monospace" fill="#1A1A1A">' + year + '</text>';
+    });
+
+    svg += '</svg>';
+    container.innerHTML = svg;
+  }
+
+  // --- Chart 2: Genre Breakdown by Year (stacked bar) ---
+  function renderGenreByYear() {
+    var container = document.getElementById('chart-genre-by-year');
+    var years = getYears();
+    if (years.length === 0) return;
+
+    // Build genre list sorted by total count (descending)
+    var genreTotals = {};
+    books.forEach(function (b) {
+      var g = b.genre || 'Unknown';
+      genreTotals[g] = (genreTotals[g] || 0) + 1;
+    });
+    var genres = Object.keys(genreTotals).sort(function (a, b) {
+      return genreTotals[b] - genreTotals[a];
+    });
+
+    // Count per year per genre
+    var data = {};
+    years.forEach(function (y) { data[y] = {}; });
+    books.forEach(function (b) {
+      var y = b.year_read;
+      var g = b.genre || 'Unknown';
+      if (!data[y]) data[y] = {};
+      data[y][g] = (data[y][g] || 0) + 1;
+    });
+
+    var maxStack = 0;
+    years.forEach(function (y) {
+      var total = 0;
+      genres.forEach(function (g) { total += (data[y][g] || 0); });
+      if (total > maxStack) maxStack = total;
+    });
+
+    var svgW = 700;
+    var svgH = 340;
+    var padL = 50;
+    var padR = 180;
+    var padT = 20;
+    var padB = 40;
+    var chartW = svgW - padL - padR;
+    var chartH = svgH - padT - padB;
+
+    var barW = Math.min(40, (chartW / years.length) * 0.6);
+    var gap = (chartW - barW * years.length) / (years.length + 1);
+
+    var yMax = Math.ceil(maxStack / 5) * 5;
+    if (yMax < 5) yMax = 5;
+    var yTicks = 5;
+    var yStep = yMax / yTicks;
+
+    var svg = '<svg width="100%" viewBox="0 0 ' + svgW + ' ' + svgH + '" xmlns="http://www.w3.org/2000/svg" style="font-family: \'Source Serif 4\', Georgia, serif;">';
+
+    // Grid
+    for (var i = 0; i <= yTicks; i++) {
+      var yVal = yStep * i;
+      var yPos = padT + chartH - (yVal / yMax) * chartH;
+      svg += '<line x1="' + padL + '" y1="' + yPos + '" x2="' + (padL + chartW) + '" y2="' + yPos + '" stroke="#DCDCDC" stroke-width="0.5"/>';
+      svg += '<text x="' + (padL - 8) + '" y="' + (yPos + 4) + '" text-anchor="end" font-size="9" font-family="\'IBM Plex Mono\', monospace" fill="#5C5C5C">' + yVal + '</text>';
+    }
+
+    // Axes
+    svg += '<line x1="' + padL + '" y1="' + padT + '" x2="' + padL + '" y2="' + (padT + chartH) + '" stroke="#1A1A1A" stroke-width="0.5"/>';
+    svg += '<line x1="' + padL + '" y1="' + (padT + chartH) + '" x2="' + (padL + chartW) + '" y2="' + (padT + chartH) + '" stroke="#1A1A1A" stroke-width="0.5"/>';
+
+    // Stacked bars
+    years.forEach(function (year, idx) {
+      var x = padL + gap + idx * (barW + gap);
+      var stackY = padT + chartH;
+
+      genres.forEach(function (genre, gi) {
+        var count = data[year][genre] || 0;
+        if (count === 0) return;
+        var segH = (count / yMax) * chartH;
+        stackY -= segH;
+        svg += '<rect x="' + x + '" y="' + stackY + '" width="' + barW + '" height="' + segH + '" fill="' + CHART_COLORS[gi % CHART_COLORS.length] + '" stroke="#1A1A1A" stroke-width="0.5"/>';
+      });
+
+      // Year label
+      svg += '<text x="' + (x + barW / 2) + '" y="' + (padT + chartH + 20) + '" text-anchor="middle" font-size="10" font-family="\'IBM Plex Mono\', monospace" fill="#1A1A1A">' + year + '</text>';
+    });
+
+    // Legend
+    var legendX = padL + chartW + 20;
+    genres.forEach(function (genre, gi) {
+      var ly = padT + gi * 20;
+      svg += '<rect x="' + legendX + '" y="' + ly + '" width="12" height="12" fill="' + CHART_COLORS[gi % CHART_COLORS.length] + '" stroke="#1A1A1A" stroke-width="0.5"/>';
+      svg += '<text x="' + (legendX + 18) + '" y="' + (ly + 10) + '" font-size="9" fill="#1A1A1A">' + escapeHtml(genre) + '</text>';
+    });
+
+    svg += '</svg>';
+    container.innerHTML = svg;
+  }
+
+  // --- Chart 3: Overall Genre Distribution (horizontal bar) ---
+  function renderGenreDistribution() {
+    var container = document.getElementById('chart-genre-distribution');
+    var genreCounts = getGenreCounts();
+
+    var genres = Object.keys(genreCounts).sort(function (a, b) {
+      return genreCounts[b] - genreCounts[a];
+    });
+
+    if (genres.length === 0) return;
+
+    var maxCount = 0;
+    genres.forEach(function (g) { if (genreCounts[g] > maxCount) maxCount = genreCounts[g]; });
+
+    var svgW = 700;
+    var barH = 22;
+    var gap = 6;
+    var padL = 140;
+    var padR = 50;
+    var padT = 10;
+    var chartW = svgW - padL - padR;
+    var svgH = padT + genres.length * (barH + gap);
+
+    var xMax = Math.ceil(maxCount / 5) * 5;
+    if (xMax < 5) xMax = 5;
+
+    var svg = '<svg width="100%" viewBox="0 0 ' + svgW + ' ' + svgH + '" xmlns="http://www.w3.org/2000/svg" style="font-family: \'Source Serif 4\', Georgia, serif;">';
+
+    genres.forEach(function (genre, idx) {
+      var count = genreCounts[genre];
+      var y = padT + idx * (barH + gap);
+      var w = (count / xMax) * chartW;
+
+      // Genre label
+      svg += '<text x="' + (padL - 8) + '" y="' + (y + barH / 2 + 4) + '" text-anchor="end" font-size="10" fill="#1A1A1A">' + escapeHtml(genre) + '</text>';
+
+      // Bar
+      svg += '<rect x="' + padL + '" y="' + y + '" width="' + w + '" height="' + barH + '" fill="' + CHART_COLORS[idx % CHART_COLORS.length] + '" stroke="#1A1A1A" stroke-width="0.5"/>';
+
+      // Count label
+      svg += '<text x="' + (padL + w + 8) + '" y="' + (y + barH / 2 + 4) + '" font-size="10" font-family="\'IBM Plex Mono\', monospace" fill="#1A1A1A">' + count + '</text>';
+    });
+
+    svg += '</svg>';
+    container.innerHTML = svg;
   }
 
   // --- Footer ---

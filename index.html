@@ -76,7 +76,21 @@
 
   <!-- TRENDS VIEW -->
   <main id="view-trends" class="view">
-    <p class="empty-state">Trends will appear once reading data is loaded.</p>
+    <p id="trends-empty" class="empty-state">Trends will appear once reading data is loaded.</p>
+    <div id="trends-content" style="display:none;">
+      <div class="chart-container">
+        <h2 class="chart-title">Books Read per Year</h2>
+        <div id="chart-books-per-year"></div>
+      </div>
+      <div class="chart-container">
+        <h2 class="chart-title">Genre Breakdown by Year</h2>
+        <div id="chart-genre-by-year"></div>
+      </div>
+      <div class="chart-container">
+        <h2 class="chart-title">Overall Genre Distribution</h2>
+        <div id="chart-genre-distribution"></div>
+      </div>
+    </div>
   </main>
 
   <!-- REFLECTIONS VIEW -->
