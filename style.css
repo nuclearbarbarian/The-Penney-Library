@@ -242,13 +242,12 @@ body {
   margin-bottom: var(--space-xs);
 }
 .reflection-card h3 {
-  font-size: 12pt;
+  font-size: 10pt;
   font-weight: 700;
   margin-top: var(--space-md);
   margin-bottom: var(--space-xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  font-size: 10pt;
 }
 .reflection-date {
   font-style: italic;
@@ -303,6 +302,17 @@ body {
   font-style: italic;
   color: var(--color-gray-70);
   line-height: 1.4;
+}
+
+/* --- Empty State --- */
+/* --- Error State --- */
+.error-banner {
+  background: var(--color-paper);
+  border: 1px solid var(--color-red);
+  color: var(--color-red);
+  font-size: 10pt;
+  padding: var(--space-sm) var(--space-lg);
+  margin-bottom: var(--space-lg);
 }
 
 /* --- Empty State --- */

@@ -10,13 +10,6 @@
   let reflections = {};
   let currentView = 'library';
 
-  // --- Genre Taxonomy ---
-  const GENRES = [
-    'Fiction', 'Nonfiction', 'Philosophy', 'History', 'Poetry',
-    'Graphic Novel', 'Science', 'Political Theory',
-    'Religion/Theology', 'Economics', 'Memoir', 'Technical'
-  ];
-
   // --- DOM References ---
   const views = {
     library: document.getElementById('view-library'),
@@ -52,18 +45,31 @@
   }
 
   // --- Data Loading ---
+  function checkedJson(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status + ' loading ' + r.url);
+    return r.json();
+  }
+
   function loadData() {
     Promise.all([
-      fetch('data/books.json').then(function (r) { return r.json(); }),
-      fetch('data/reflections.json').then(function (r) { return r.json(); })
+      fetch('data/books.json').then(checkedJson),
+      fetch('data/reflections.json').then(checkedJson)
     ]).then(function (results) {
       books = results[0];
       reflections = results[1];
       init();
     }).catch(function (err) {
       console.error('Failed to load data:', err);
+      showError('Failed to load reading data. Check the console for details.');
       init();
     });
+  }
+
+  function showError(msg) {
+    var banner = document.createElement('div');
+    banner.className = 'error-banner';
+    banner.textContent = msg;
+    document.querySelector('.site-nav').insertAdjacentElement('afterend', banner);
   }
 
   function init() {
@@ -547,6 +553,7 @@
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
     var monthIndex = parseInt(parts[1], 10) - 1;
+    if (monthIndex < 0 || monthIndex > 11) return dateStr;
     return months[monthIndex] + ' ' + parseInt(parts[2], 10) + ', ' + parts[0];
   }
 
