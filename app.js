@@ -37,7 +37,6 @@
   });
 
   function switchView(view) {
-    currentView = view;
     document.querySelectorAll('.nav-btn').forEach(function (b) {
       b.classList.toggle('active', b.dataset.view === view);
     });
