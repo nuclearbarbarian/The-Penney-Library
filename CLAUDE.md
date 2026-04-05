@@ -8,7 +8,7 @@ Personal reading tracker and reflection tool.
 - Data entry happens via Claude Code (paste reading lists, Claude parses and writes to books.json)
 - Reflections are created via the `/reflect` Claude Code skill, stored in reflections.json
 - The web app is a read-only display layer: library table, trend charts, reflection archive
-- Hosted on GitHub Pages (private repo)
+- Hosted on GitHub Pages (public repo)
 
 ## Data
 - `data/books.json` — flat array of book objects
