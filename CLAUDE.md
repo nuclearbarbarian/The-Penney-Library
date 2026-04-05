@@ -21,5 +21,5 @@ Personal reading tracker and reflection tool.
 - No animation libraries, no tooltip frameworks, no build dependencies
 
 ## Genre Taxonomy
-Fiction, Nonfiction, Philosophy, History, Poetry, Graphic Novel, Science,
+Fiction, Nonfiction, Philosophy, History, Poetry, Drama, Graphic Novel, Science,
 Political Theory, Religion/Theology, Economics, Memoir, Technical

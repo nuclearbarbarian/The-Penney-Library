@@ -1,1 +1,50 @@
-{}
+{
+  "2025": {
+    "date": "2026-04-04",
+    "context": "A 144-book year dominated by graphic novels (49%) and fiction (33%), driven by a systematic deep-dive into crime/noir storytelling — particularly Ed Brubaker's body of work and the prose authors he cites as influences. Political theory and history moved to the margins as the user lived through the political events he'd normally read about. Philosophy, poetry, theology, and economics nearly vanished compared to 2020–2023.",
+    "experience": {
+      "goals": "Interested in noir, especially authors Ed Brubaker mentioned in interviews. Working in politics during the first year of the Trump administration made reading theory and history feel less appealing — living through it in real time during budget reconciliation.",
+      "standout_moments": "Gottfried and Marini stuck as the user became more directly involved in politics — Marini's indictment of Congress as a budgeting committee played out in real time. Ellroy, Dostoevsky, Brubaker, and Lapham resonated through their shared preoccupation with failed or troubled redemption — people who can't get out of their own way. Rereading Paul Pope recalled childhood. Gene Wolfe's Book of the New Sun, read in a two-week surgery recovery binge, proved intensely mysterious and remains a constant presence — a master of style and games.",
+      "surprises": "Peter Pan was far more disturbing than expected — an almost demonic character in a madcap, dangerous book. Final Cut (Charles Burns) elevated Gen X's myopic focus on adolescence and the 1970s to something wistful and harrowing. The Toobin book provided helpful context on boomer culture wars and the phoniness of many radicals. Morrow's Sound of Typewriters, received as part of a Novak fellowship gift bag, explained much about mid-century America and the press — surprising it isn't better known."
+    },
+    "reflection": {
+      "worked_well": "The Brubaker-as-curator strategy gave fiction reading coherence — using one artist's cited influences (Westlake, Block, Ellroy, Hammett, Chandler, Goodis, Himes) as a reading map rather than browsing. Completionist series runs (Criminal, Sleeper, Reckless, Outcast, Akira, Stray Bullets) created sustained immersion. The Gene Wolfe surgery binge demonstrated what deep reading under forced conditions can produce. The political theory that appeared (Marini, Gottfried, Continetti) landed harder precisely because it was read against live events rather than as academic exercise.",
+      "didnt_work": "The Civil War cluster (Guelzo, Jaffa, McPherson, Ward, Faust) sat disconnected from the year's other threads — five books without a clear line forward or backward. Horror reading was steady but diffuse, a book here and there without the systematic engagement brought to crime fiction — recreational where the noir was investigative.",
+      "root_causes": "Noir reading worked because it had structure (Brubaker's interviews as syllabus) and fed an emotional preoccupation (failed redemption, people trapped by their own natures). Political theory worked because of proximity to the subject. The Civil War cluster lacked connective tissue to the rest of the year. Horror lacked a guide or organizing principle.",
+      "tensions": "Escapism vs. engagement: genre reading felt like escape but the best of it (Ellroy, Dostoevsky, Marini) was a different angle on the same questions the 'serious' reading would have addressed. Depth vs. breadth within genre: 27 Brubaker books is nearly a fifth of the year to one author-artist pair. The vanishing intellectual core: philosophy, theology, poetry, economics — the categories that defined 2020–2023 — are functionally gone, raising the question of natural rotation vs. genuine loss."
+    },
+    "action": [
+      {
+        "title": "Follow the Interviews",
+        "practice": "When an artist or author you admire cites influences in interviews, essays, or backmatter, treat that as a reading list. Build a queue from it before browsing for new books cold.",
+        "why": "The Brubaker-as-curator model was the most productive reading strategy of the year — it gave fiction coherence that random discovery wouldn't have.",
+        "category": "Reading Strategy"
+      },
+      {
+        "title": "One Anchor Text Per Quarter",
+        "practice": "Each quarter, read one book from the dormant categories — philosophy, theology, poetry, or economics. One book, chosen because it connects to something you're already reading or living through.",
+        "why": "The categories that built the intellectual foundation (2020's Plato, Vico, Aristotle) are going fallow. Marini proved the right book at the right moment hits harder than five in a vacuum.",
+        "category": "Intellectual Development"
+      },
+      {
+        "title": "Give Horror the Noir Treatment",
+        "practice": "Pick one horror author or critic whose taste you trust and use their canon as a map — the way Brubaker's interviews worked for noir. Read systematically rather than one-off.",
+        "why": "Eight or nine horror books this year and none stuck like Ellroy or Wolfe did. The genre is pulling but without structure it stays recreational.",
+        "category": "Genre Exploration"
+      },
+      {
+        "title": "Let History Earn Its Place",
+        "practice": "Before starting a history cluster, name the question it's answering. If you can't articulate why these books and why now, read one and see if it opens something before committing to five.",
+        "why": "The Civil War cluster was the least connected reading of the year. Contrast with Democracy in Power and Yucca Mountain, which connected directly to energy work.",
+        "category": "Reading Strategy"
+      },
+      {
+        "title": "Protect the Surgery Conditions",
+        "practice": "Once or twice a year, create a forced immersion window — a week or two reading one author or one long work without interleaving other books.",
+        "why": "The Gene Wolfe binge produced the most lasting impression of the year. Two weeks with Book of the New Sun is qualitatively different from four novels spread across months.",
+        "category": "Reading Practice"
+      }
+    ],
+    "evaluation": "First reflection — no prior years to compare. The single most important carry-forward: spend more time on individual authors and themes rather than going broad. Breadth comes naturally; depth in chosen authors is what focuses the reading and produces the most lasting impressions (Brubaker, Ellroy, Wolfe all confirmed this in 2025)."
+  }
+}
