@@ -8,7 +8,6 @@
   // --- State ---
   let books = [];
   let reflections = {};
-  let currentView = 'library';
 
   // --- DOM References ---
   const views = {
@@ -20,11 +19,14 @@
   const filterGenre = document.getElementById('filter-genre');
   const sortBy = document.getElementById('sort-by');
   const libraryBody = document.getElementById('library-body');
+  const libraryTable = document.querySelector('.library-table');
   const bookCount = document.getElementById('book-count');
   const emptyState = document.getElementById('empty-state');
   const reflectionsList = document.getElementById('reflections-list');
   const reflectionsEmpty = document.getElementById('reflections-empty');
   const lastUpdated = document.getElementById('last-updated');
+  const trendsEmpty = document.getElementById('trends-empty');
+  const trendsContent = document.getElementById('trends-content');
 
   // --- Navigation ---
   document.querySelectorAll('.nav-btn').forEach(function (btn) {
@@ -153,10 +155,10 @@
 
     if (filtered.length === 0) {
       emptyState.style.display = 'block';
-      document.querySelector('.library-table').style.display = 'none';
+      libraryTable.style.display = 'none';
     } else {
       emptyState.style.display = 'none';
-      document.querySelector('.library-table').style.display = 'table';
+      libraryTable.style.display = 'table';
 
       filtered.forEach(function (book) {
         var tr = document.createElement('tr');
@@ -284,9 +286,6 @@
     '#3D5C3D', '#C4A035', '#2D2D2D', '#9C9788', '#DCDCDC', '#6B4B3D', '#4B6B5C'];
 
   function renderTrends() {
-    var trendsEmpty = document.getElementById('trends-empty');
-    var trendsContent = document.getElementById('trends-content');
-
     if (books.length === 0) {
       trendsEmpty.style.display = 'block';
       trendsContent.style.display = 'none';
@@ -389,12 +388,7 @@
     var years = getYears();
     if (years.length === 0) return;
 
-    // Build genre list sorted by total count (descending)
-    var genreTotals = {};
-    books.forEach(function (b) {
-      var g = b.genre || 'Unknown';
-      genreTotals[g] = (genreTotals[g] || 0) + 1;
-    });
+    var genreTotals = getGenreCounts();
     var genres = Object.keys(genreTotals).sort(function (a, b) {
       return genreTotals[b] - genreTotals[a];
     });
@@ -539,9 +533,11 @@
 
   // --- Utilities ---
   function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   function formatDate(dateStr) {
