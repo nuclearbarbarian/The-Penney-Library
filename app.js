@@ -15,6 +15,7 @@
     trends: document.getElementById('view-trends'),
     reflections: document.getElementById('view-reflections'),
   };
+  const searchInput = document.getElementById('search-input');
   const filterYear = document.getElementById('filter-year');
   const filterGenre = document.getElementById('filter-genre');
   const sortBy = document.getElementById('sort-by');
@@ -123,10 +124,13 @@
     var year = filterYear.value;
     var genre = filterGenre.value;
     var sort = sortBy.value;
+    var query = searchInput.value.toLowerCase().trim();
 
     var filtered = books.filter(function (b) {
       if (year !== 'all' && String(b.year_read) !== year) return false;
       if (genre !== 'all' && b.genre !== genre) return false;
+      if (query && (b.title || '').toLowerCase().indexOf(query) === -1 &&
+          (b.author || '').toLowerCase().indexOf(query) === -1) return false;
       return true;
     });
 
@@ -553,6 +557,7 @@
   }
 
   // --- Event Listeners ---
+  searchInput.addEventListener('input', renderLibrary);
   filterYear.addEventListener('change', renderLibrary);
   filterGenre.addEventListener('change', renderLibrary);
   sortBy.addEventListener('change', renderLibrary);

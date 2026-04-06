@@ -145,15 +145,21 @@ body {
   letter-spacing: 0.08em;
   color: var(--color-gray-50);
 }
-.filter-group select {
+.filter-group select,
+.filter-group input[type="text"] {
   font-family: var(--font-mono);
   font-size: 10pt;
   padding: 4px 8px;
   border: 1px solid var(--color-ink);
   background: var(--color-paper);
   color: var(--color-ink);
+}
+.filter-group select {
   cursor: pointer;
   appearance: auto;
+}
+.filter-group input[type="text"]::placeholder {
+  color: var(--color-warm-gray);
 }
 .library-count {
   margin-left: auto;
